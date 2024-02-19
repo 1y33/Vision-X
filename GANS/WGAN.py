@@ -7,11 +7,9 @@ import torchvision.transforms as transforms
 import os
 from PIL import Image
 
-import utils
-from utils import show
-
 from torch.utils.data import Dataset,DataLoader
 
+import Utils.utils_fn as utils_fn
 
 ## Generator model
 class Generator(nn.Module):
@@ -70,8 +68,8 @@ class Critic(nn.Module):
     )
 
   def forward(self,image):
-    #128 x 3 x 256 x 256
-    crit_pred = self.critic(image) #128 x 1 x 1 x1
+    # 128 x 3 x 256 x 256
+    crit_pred = self.critic(image) # 128 x 1 x 1 x1
     crit_pred = crit_pred.view(len(crit_pred),-1)
 
     return crit_pred
@@ -180,9 +178,8 @@ class Trainer:
 
                 # Stats
                 if (cur_step % 10 == 0 and cur_step > 0):
-                    utils.show.show_batch(fake)
-                    utils.show.show_batch(real)
-
+                    utils_fn.show.show_batch(fake)
+                    utils_fn.show.show_batch(real)
                     print(f"Epoch:{epoch + 1} | Step: {cur_step + 1}\r")
                     print(f"Gen Loss: {gen_loss} | Crit Loss: {crit_loss}")
 
@@ -238,7 +235,7 @@ def train(path_2_data_folder,data=None):
 
 def generate_image(generator,z_dim=200):
     img = generator.gen_noise(z_dim=200)
-    show.show_from_tensor(img)
+    utils_fn.show.show_from_tensor(img)
 
 
 
